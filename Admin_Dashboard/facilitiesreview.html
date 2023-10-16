@@ -288,7 +288,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="park">Is there a park at your institute?</label>
+                        <label for="park">1.Is there a park at your institute?</label>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" name="park" value="yes" id="parkYes" required>
                             <label class="form-check-label" for="parkYes">Yes</label>
@@ -300,7 +300,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="gym">Is there a gym at your institute?</label>
+                        <label for="gym">2.Is there a gym at your institute?</label>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" name="gym" value="yes" id="gymYes" required>
                             <label class="form-check-label" for="gymYes">Yes</label>
@@ -310,9 +310,30 @@
                             <label class="form-check-label" for="gymNo">No</label>
                         </div>
                     </div>
-                    
                     <div class="form-group">
-                        <label>3. Are there any sports events at your institute?</label>
+                        <label for="gym">3.Is there a ground at your institute?</label>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="gym" value="yes" id="gymYes" required>
+                            <label class="form-check-label" for="gymYes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="gym" value="no" id="gymNo">
+                            <label class="form-check-label" for="gymNo">No</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>4. Are there any sports events at your institute?</label>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="sportsEvents" value="yes" id="sportsEventsYes">
+                            <label class="form-check-label" for="sportsEventsYes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="sportsEvents" value="no" id="sportsEventsNo">
+                            <label class="form-check-label" for="sportsEventsNo">No</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>5.Is there a canteen at your institute?</label>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" name="sportsEvents" value="yes" id="sportsEventsYes">
                             <label class="form-check-label" for="sportsEventsYes">Yes</label>
@@ -323,13 +344,13 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>4. How satisfied are you with the academic facilities at your institute? (Scale of 1-5)</label>
                         <input type="range" class="form-control-range" name="academicSatisfaction" min="1" max="6">
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
-                        <label>5. Do you find the library facilities satisfactory?</label>
+                        <label>6. Do you find the library facilities satisfactory?</label>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" name="librarySatisfaction" value="yes" id="librarySatisfactionYes">
                             <label class="form-check-label" for="librarySatisfactionYes">Yes</label>
@@ -340,18 +361,15 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>6. Any additional comments or suggestions:</label>
-                        <textarea class="form-control" name="comments" rows="4"></textarea>
-                    </div>
-                
+                    
+<!--                 
                     <div class="form-group">
                         <label>7. How would you rate the cleanliness and maintenance of the campus? (Scale of 1-5)</label>
                         <input type="range" class="form-control-range" name="cleanlinessRating" min="1" max="6">
-                    </div>
+                    </div> -->
                 
                     <div class="form-group">
-                        <label>8. Is the institute well-equipped with modern technology and infrastructure?</label>
+                        <label>7. Is the institute well-equipped with modern technology and infrastructure?</label>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" name="infrastructure" value="yes" id="infrastructureYes">
                             <label class="form-check-label" for="infrastructureYes">Yes</label>
@@ -362,13 +380,13 @@
                         </div>
                     </div>
                 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>9. How satisfied are you with the placement opportunities provided by the institute? (Scale of 1-5)</label>
                         <input type="range" class="form-control-range" name="placementSatisfaction" min="1" max="6">
-                    </div>
+                    </div> -->
                 
                     <div class="form-group">
-                        <label>10. Have you had access to quality study materials and resources?</label>
+                        <label>8. Have you had access to quality study materials and resources?</label>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" name="studyMaterials" value="yes" id="studyMaterialsYes">
                             <label class="form-check-label" for="studyMaterialsYes">Yes</label>
@@ -380,7 +398,7 @@
                     </div>
                 
                     <div class="form-group">
-                        <label>11. Are there any industry-specific workshops or training programs available?</label>
+                        <label>9. Are there any industry-specific workshops or training programs available?</label>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" name="industryWorkshops" value="yes" id="industryWorkshopsYes">
                             <label class="form-check-label" for="industryWorkshopsYes">Yes</label>
@@ -391,13 +409,13 @@
                         </div>
                     </div>
                 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>12. How would you rate the responsiveness and effectiveness of the study faculty? (Scale of 1-5)</label>
                         <input type="range" class="form-control-range" name="facultyRating" min="1" max="6">
-                    </div>
+                    </div> -->
                 
                     <div class="form-group">
-                        <label>13. Do you have access to a well-maintained computer lab?</label>
+                        <label>10. Do you have access to a well-maintained computer lab?</label>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" name="computerLab" value="yes" id="computerLabYes">
                             <label class="form-check-label" for="computerLabYes">Yes</label>
@@ -409,7 +427,7 @@
                     </div>
                 
                     <div class="form-group">
-                        <label>14. Are there opportunities for internships and real-world experience?</label>
+                        <label>11. Are there opportunities for internships and real-world experience?</label>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" name="internshipOpportunities" value="yes" id="internshipOpportunitiesYes">
                             <label class="form-check-label" for="internshipOpportunitiesYes">Yes</label>
@@ -419,12 +437,15 @@
                             <label class="form-check-label" for="internshipOpportunitiesNo">No</label>
                         </div>
                     </div>
-                
+<!--                 
                     <div class="form-group">
                         <label>15. How would you rate the accessibility and approachability of the institute's administration and support staff? (Scale of 1-5)</label>
                         <input type="range" class="form-control-range" name="staffRating" min="1" max="6">
+                    </div> -->
+                    <div class="form-group">
+                        <label>12. Any additional comments or suggestions:</label>
+                        <textarea class="form-control" name="comments" rows="4"></textarea>
                     </div>
-                    
                     <div class="image-upload">
                         <h3>Upload Any College Images</h3><br>
                         <input type="file" name="file" id="file" class="inputfile">
