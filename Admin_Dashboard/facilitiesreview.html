@@ -311,18 +311,18 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="gym">3.Is there a ground at your institute?</label>
+                        <label for="ground">3.Is there a ground at your institute?</label>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="gym" value="yes" id="gymYes" required>
-                            <label class="form-check-label" for="gymYes">Yes</label>
+                            <input type="radio" class="form-check-input" name="ground" value="yes" id="groundYes" required>
+                            <label class="form-check-label" for="groundYes">Yes</label>
                         </div>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="gym" value="no" id="gymNo">
-                            <label class="form-check-label" for="gymNo">No</label>
+                            <input type="radio" class="form-check-input" name="ground" value="no" id="groundNo">
+                            <label class="form-check-label" for="groundNo">No</label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>4. Are there any sports events at your institute?</label>
+                        <label for="sportsEvents">4. Are there any sports events at your institute?</label>
                         <div class="form-check">
                             <input type="radio" class="form-check-input" name="sportsEvents" value="yes" id="sportsEventsYes">
                             <label class="form-check-label" for="sportsEventsYes">Yes</label>
@@ -333,14 +333,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>5.Is there a canteen at your institute?</label>
+                        <label for="canteen">5.Is there a canteen at your institute?</label>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="sportsEvents" value="yes" id="sportsEventsYes">
-                            <label class="form-check-label" for="sportsEventsYes">Yes</label>
+                            <input type="radio" class="form-check-input" name="canteen" value="yes" id="canteenYes">
+                            <label class="form-check-label" for="canteenYes">Yes</label>
                         </div>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="sportsEvents" value="no" id="sportsEventsNo">
-                            <label class="form-check-label" for="sportsEventsNo">No</label>
+                            <input type="radio" class="form-check-input" name="canteen" value="no" id="canteenNo">
+                            <label class="form-check-label" for="canteenNo">No</label>
                         </div>
                     </div>
 
@@ -350,14 +350,14 @@
                     </div> -->
 
                     <div class="form-group">
-                        <label>6. Do you find the library facilities satisfactory?</label>
+                        <label for="library">6. Do you find the library facilities satisfactory?</label>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="librarySatisfaction" value="yes" id="librarySatisfactionYes">
-                            <label class="form-check-label" for="librarySatisfactionYes">Yes</label>
+                            <input type="radio" class="form-check-input" name="library" value="yes" id="libraryYes">
+                            <label class="form-check-label" for="libraryYes">Yes</label>
                         </div>
                         <div class="form-check">
-                            <input type="radio" class="form-check-input" name="librarySatisfaction" value="no" id="librarySatisfactionNo">
-                            <label class="form-check-label" for="librarySatisfactionNo">No</label>
+                            <input type="radio" class="form-check-input" name="library" value="no" id="libraryNo">
+                            <label class="form-check-label" for="libraryNo">No</label>
                         </div>
                     </div>
 
@@ -457,31 +457,38 @@
             </div>
         </div>
     </div>
-    <script>
-        const reviewForm = document.getElementById('reviewForm');
-        reviewForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const formData = new FormData(reviewForm);
-            const reviewData = {};
-            for (const [key, value] of formData.entries()) {
-                reviewData[key] = value;
-            }
+        <script>
+            // Handle form submission
+            document.querySelector('#reviewForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                const formData = new FormData(this);
+                const jsonData = {};
 
-            fetch('/submit-review', {
+                formData.forEach((value, key) => {
+                jsonData[key] = value;
+                });
+
+                // Make an AJAX request to submit the facilities data
+                fetch('/submit-facilities', {
                 method: 'POST',
-                body: JSON.stringify(reviewData),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData),
+                })
+                .then(response => response.json())
+                .then(data => {
+                if (data.success) {
+                    alert(data.message); // Show the success message in an alert
+                    window.location.reload(); // Reload the page
+                } else {
+                    alert(data.error); // Show an error message in case of an error
                 }
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Review data submitted successfully:', data);
-            })
-            .catch(error => {
-                console.error('Error submitting review:', error);
+                })
+                .catch(error => {
+                console.error('Error:', error);
+                });
             });
-        });
-    </script>
+            </script>
 </body>
 </html>
