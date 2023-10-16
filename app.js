@@ -13,7 +13,6 @@ admin.initializeApp({
   databaseURL: "https://console.firebase.google.com/u/0/project/college-critic/firestore/data/~2F"
 });
 
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -42,17 +41,22 @@ app.get('/login', (req, res) =>{
     res.sendFile(path.join(__dirname, "Admin_Register/index.html"));
 });
 
+app.get('/admindashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, "Admin_Dashboard/dashboard.html"));
+});
+
+app.get('/facilities', (req, res) => {
+  res.sendFile(path.join(__dirname, "Admin_Dashboard/facilitiesreview.html"));
+})
 app.post('/register', async (req, res) => {
     try {
       const { email, password, AdminName, InstituteName, domain } = req.body;
       const hashedPassword = passwordHash.generate(password);
-      // Create a new user in Firebase Authentication
       const userRecord = await admin.auth().createUser({
         email: email,
         password: password,
         displayName: 'Admin'
       });
-      // Store admin details in Firestore
       const adminData = {
         email: email,
         AdminName: AdminName,
@@ -74,22 +78,18 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
     try {
       const { email, password } = req.body;
-  
-      // Get the admin document from Firestore by email
+
       const adminQuery = await admin.firestore().collection('admins').where('email', '==', email).get();
       if (adminQuery.empty) {
-        res.status(401).send('Unauthorized'); // Admin not found
+        res.status(401).send('Unauthorized');
         return;
       }
   
       const adminData = adminQuery.docs[0].data();
   
-      // Verify the user's password
       if (passwordHash.verify(password, adminData.password)) {
-        // Passwords match; proceed with login
-        res.status(200).send('Login successful');
+        res.redirect('/admindashboard');
       } else {
-        // Passwords do not match
         res.status(401).send('Unauthorized');
       }
     } catch (error) {
@@ -97,6 +97,49 @@ app.post('/login', async (req, res) => {
       res.status(500).send('Login failed');
     }
 });  
+
+app.post('/submit-review', async (req, res) => {
+  try {
+      const reviewData = req.body;
+
+      // Assuming you have Firebase Firestore initialized
+      const collegeName = reviewData.collegeName; // Get the college name from the form data
+
+      // Create a reference to the "colleges" collection and a subcollection based on the college name
+      const collegeRef = admin.firestore().collection('colleges').doc(collegeName).collection('reviews');
+
+      // Store the review data in the subcollection
+      await collegeRef.add(reviewData);
+      console.log('Review data stored successfully under college:', collegeName);
+      res.status(201).json({ message: 'Review submitted successfully' });
+  } catch (error) {
+      console.error('Error submitting review:', error);
+      res.status(500).send('Error submitting review');
+  }
+});
+
+app.get('/view-college/:collegeName', async (req, res) => {
+  try {
+      const collegeName = req.params.collegeName;
+
+      // Create a reference to the subcollection for the specific college
+      const collegeRef = admin.firestore().collection('colleges').doc(collegeName).collection('reviews');
+
+      const reviews = [];
+      const querySnapshot = await collegeRef.get();
+      querySnapshot.forEach((doc) => {
+          reviews.push(doc.data());
+      });
+
+      // Render or send this data as needed for display.
+      // You can use a templating engine to create a beautiful display.
+
+      res.json(reviews);
+  } catch (error) {
+      console.error('Error retrieving college data:', error);
+      res.status(500).send('Error retrieving college data');
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
