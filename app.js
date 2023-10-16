@@ -217,33 +217,7 @@ app.post('/submit-facilities', async (req, res) => {
 
     // Assuming "facilitiesDocId" is the field where you want to store the ID
     await facilitiesDocRef.set(facilitiesDoc, { merge : true });
-
-    app.post('/submit-facilities', async (req, res) => {
-      try {
-        const facilitiesData = req.body;
-    
-        const collegeName = facilitiesData.collegeName; // Get the college name from the form data
-    
-        // Create a reference to the "colleges" collection and a subcollection based on the college name
-        const collegeRef = admin.firestore().collection('colleges').doc(collegeName).collection('facilities');
-    
-        // Store the review data in the subcollection and capture the auto-generated ID
-        const facilitiesDocRef = await collegeRef.add(facilitiesData);
-        const facilitiesDoc = {
-          facilitiesDocId: facilitiesDocRef.id,
-        }
-    
-        // Assuming "facilitiesDocId" is the field where you want to store the ID
-        await facilitiesDocRef.set(facilitiesDoc, { merge: true });
-    
-        // Send a JSON response indicating success
-        res.status(200).json({ message: 'Facilities stored successfully' });
-      } catch (error) {
-        console.error('Error submitting facilities:', error);
-        res.status(500).json({ error: 'Error submitting facilities' });
-      }
-    });
-    
+    res.redirect(302, '/facilities');
   } catch (error) {
     console.error('Error submitting review:', error);
     res.status(500).send('Error submitting review');

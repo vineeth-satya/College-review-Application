@@ -281,7 +281,7 @@
                 <h1>College Facilities Review</h1>
             </header>
             <div class="container">
-                <form id="reviewForm">
+                <form id="reviewForm" action="/submit-facilities" method="post">
                     <div class="form-group">
                         <label for="collegeName">College Name:</label>
                         <input type="text" id="collegeName" name="collegeName" required>
@@ -457,38 +457,5 @@
             </div>
         </div>
     </div>
-        <script>
-            // Handle form submission
-            document.querySelector('#reviewForm').addEventListener('submit', function (event) {
-                event.preventDefault();
-                const formData = new FormData(this);
-                const jsonData = {};
-
-                formData.forEach((value, key) => {
-                jsonData[key] = value;
-                });
-
-                // Make an AJAX request to submit the facilities data
-                fetch('/submit-facilities', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(jsonData),
-                })
-                .then(response => response.json())
-                .then(data => {
-                if (data.success) {
-                    alert(data.message); // Show the success message in an alert
-                    window.location.reload(); // Reload the page
-                } else {
-                    alert(data.error); // Show an error message in case of an error
-                }
-                })
-                .catch(error => {
-                console.error('Error:', error);
-                });
-            });
-            </script>
 </body>
 </html>
