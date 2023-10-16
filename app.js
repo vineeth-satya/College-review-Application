@@ -47,7 +47,12 @@ app.get('/admindashboard', (req, res) => {
 
 app.get('/facilities', (req, res) => {
   res.sendFile(path.join(__dirname, "Admin_Dashboard/facilitiesreview.html"));
-})
+});
+
+app.get('/reviews', (req, res) => {
+  res.sendFile(path.join(__dirname, "Admin_Dashboard/reviews.html"));
+});
+
 app.post('/register', async (req, res) => {
     try {
       const { email, password, AdminName, InstituteName, domain } = req.body;
