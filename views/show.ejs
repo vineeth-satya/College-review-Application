@@ -11,12 +11,7 @@
     <style>
         body {
             margin: 0px;
-        }
-        
-        .image {
-            border: 2px solid black;
-            height: 500px;
-            width: 800px;
+            background-color: #97e8df;
         }
         
         .parent {
@@ -30,26 +25,24 @@
         
         .li {
             display: flex;
-            gap: 30%;
-            margin-left: 30%;
+            gap: 15%;
+            margin-left: 24%;
         }
         
         .facilities {
-            border: 2px solid black;
             font-size: 20px;
-            background-color: #97e8df;
         }
         
         .reviews {
             padding-left: 60vh;
             font-size: 20px;
-            background-color: #97e8df;
         }
         
         li {
             text-align: start;
             padding-left: 5px;
-            width: 120%;
+            width: 250px;
+            height: auto;
         }
     </style>
 </head>
@@ -57,91 +50,81 @@
 <body>
     <div class="parent">
         <div class="image">
-          <% for (let i = 0; i < imageUrls.length; i++) { %>
-            <img src="<%= imageUrls[i] %>" alt="Facility Image <%= i + 1 %>">
-          <% } %>
+            <img src="<%= imageUrls %>" alt="College Image" style="height: 500px; width: 800px; border: 2px solid black;">
         </div>
-      </div>
+    </div>    
     <div class="facilities">
         <center>
             <h2 style="font-size: 30px; border: 1px solid black; border-top-right-radius: 50%; border-bottom-left-radius: 50%; width: 50%;background:linear-gradient(#00CDAC,#56B4D3)">College Facilities</h2>
-            <div class="li">
-                <div class="child1">
-                    <ul>
-                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
-                            Canteen :
-                            <%=collegeData[0].canteen %>
-                        </li><br>
-                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
-                            Ground :
-                            <%=collegeData[0].ground %>
-                        </li><br>
-                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
-                            Library :
-                            <%=collegeData[0].library %>
-                        </li><br>
-                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
-                            Park :
-                            <%=collegeData[0].park %>
-                        </li><br>
-                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
-                            Gym :
-                            <%=collegeData[0].gym %>
-                        </li><br>
-
-                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
-                            Infrastructure :
-                            <%=collegeData[0].infrastructure %>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="child2">
-                    <ul>
-                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
-                            Sports/Events :
-                            <%=collegeData[0].sportsEvents %>
-                        </li><br>
-                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
-                            ComputerLab :
-                            <%=collegeData[0].computerLab %>
-                        </li><br>
-                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
-                            IndustryWorkshops :
-                            <%=collegeData[0].industryWorkshops %>
-                        </li><br>
-                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
-                            InternshipOpportunities :
-                            <%=collegeData[0].internshipOpportunities %>
-                        </li><br>
-                        <li style="border: 1px solid black; height: auto; border-radius: 5px;background-color:white;">
-                            Additional Facilities :
-                            <%=collegeData[0].comments %>
-                        </li>
-                    </ul>
-                </div>
-
-
-            </div>
         </center>
+        <div class="li">
+            <div class="child1">
+                <ul>
+                    <li style="border: 1px solid black; border-radius: 5px;background-color:#00CDAC;">
+                        Canteen :
+                        <span style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><%=collegeData[0].canteen %></span>
+                    </li><br>
+                    <li style="border: 1px solid black; border-radius: 5px;background-color:#00CDAC;">
+                        Ground :
+                        <span style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><%=collegeData[0].ground %></span>
+                    </li><br>
+                    <li style="border: 1px solid black; border-radius: 5px;background-color:#00CDAC;">
+                        Library :
+                        <span style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><%=collegeData[0].library %></span>
+                    </li><br>
+                    <li style="border: 1px solid black; border-radius: 5px;background-color:#00CDAC;">
+                        Park :
+                        <span style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><%=collegeData[0].park %></span>
+                    </li><br>
+                    <li style="border: 1px solid black; border-radius: 5px;background-color:#00CDAC;">
+                        Gym :
+                        <span style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><%=collegeData[0].gym %></span>
+                    </li><br>
+                    <li style="border: 1px solid black; border-radius: 5px;background-color:#00CDAC;">
+                        Infrastructure :
+                        <span style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><%=collegeData[0].infrastructure %></span>
+                    </li>
+                </ul>
+            </div>
+            <div class="child2">
+                <ul>
+                    <li style="border: 1px solid black; border-radius: 5px;background-color:#00CDAC;">
+                        Sports/Events :
+                        <span style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><%=collegeData[0].sportsEvents %></span>
+                    </li><br>
+                    <li style="border: 1px solid black; border-radius: 5px;background-color:#00CDAC;">
+                        ComputerLab :
+                        <span style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><%=collegeData[0].computerLab %></span>
+                    </li><br>
+                    <li style="border: 1px solid black; border-radius: 5px;background-color:#00CDAC;">
+                        IndustryWorkshops :
+                        <span style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><%=collegeData[0].industryWorkshops %></span>
+                    </li><br>
+                    <li style="border: 1px solid black; border-radius: 5px;background-color:#00CDAC;">
+                        InternshipOpportunities :
+                        <span style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><%=collegeData[0].internshipOpportunities %></span>
+                    </li><br>
+                    <li style="border: 1px solid black; height: auto; border-radius: 5px;background-color:#00CDAC;">
+                        Additional Facilities :
+                        <span style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"><%=collegeData[0].comments %></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
+    <hr style="margin: 0;"><br><br>
     <div class="reviews">
         <h2 style="margin-top: 0px;">College Reviews:</h2>
         <ul style="padding-left: 6vh;margin-bottom:0px;">
             <% reviews.forEach((review) => { %>
-                <li style="border: 1px solid black; width: 60%; height: auto; margin-bottom: 5px; padding: 10px;">
-                    <p style="border: 1px solid black; padding: 5px;background-color:white;"><strong>Student Name: <%=review.student %></strong></p>
-                    <p style="border: 1px solid black; padding: 5px;background-color:white;">Review:
+                <li style="border: 1px solid black; width: 60%; height: auto; margin-bottom: 5px; padding: 10px; border-radius: 10px; background-color: #00CDAC;">
+                    <p style="border: 1px solid black; padding: 5px;background-color:#56B4D3;"><strong>Student Name: <%=review.student %></strong></p>
+                    <p style="border: 1px solid black; padding: 5px;background-color:white; margin-left: 50px; border-radius: 5px; height: auto;">Review:
                         <%=review.reviewData %>
                     </p>
                 </li>
-                <%
-            }
-            );
-            %>
+            <% }); %>
         </ul>
     </div>
-
 </body>
-
 </html>

@@ -22,7 +22,7 @@ const storage = new Storage({
 })
 
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views')); // Update this path to your views directory
+app.set('views', path.join(__dirname, 'views')); 
 
 const bucket = storage.bucket("gs://college-critic.appspot.com");
 
@@ -81,7 +81,7 @@ app.get('/studentreview', (req, res) => {
 });
 
 app.get('/college-details', (req, res) => {
-  res.render(__dirname + "/views/show.ejs", { collegeData : "", reviews : "", imageUrls : "" });
+  res.render(__dirname + "/views/show.ejs", { collegeData: "", reviews: "", imageUrls: [] });
 });
 
 app.post('/register', async (req, res) => {
@@ -96,7 +96,7 @@ app.post('/register', async (req, res) => {
       const adminData = {
         email: email,
         AdminName: AdminName,
-        InstituteName: InstituteName,
+        InstituteName: InstituteName.toLowerCase(),
         domain: domain,
         password: hashedPassword
       };
@@ -145,37 +145,31 @@ app.post('/studentregister', async (req, res) => {
     });
 
     const studentUID = userRecord.uid;
-    // Now, let's check if the provided email matches the domain of the InstituteName
-    // First, retrieve the domain from the admin's data based on the InstituteName
-    const adminQuery = await admin.firestore().collection('admins').where('InstituteName', '==', InstituteName).get();
+    const adminQuery = await admin.firestore().collection('admins').where('InstituteName', '==', InstituteName.toLowerCase()).get();
 
     if (adminQuery.empty) {
       res.status(404).send('Institute not found');
       return;
     }
 
-    // Assuming InstituteName is unique, so there should be only one result
     const adminData = adminQuery.docs[0].data();
     const instituteDomain = adminData.domain;
 
-    // Check if the student's email matches the expected domain
     if (email.endsWith(`@${instituteDomain}`)) {
-      // If it matches, proceed with storing the student data
       const studentData = {
         uid: studentUID,
         email: email,
         StudentName: StudentName,
-        InstituteName: InstituteName,
+        InstituteName: InstituteName.toLowerCase(),
         password: hashedPassword
       };
 
       const collegeName = adminData.InstituteName;
-      const collegeStudentsRef = admin.firestore().collection('colleges').doc(collegeName).collection('students');
+      const collegeStudentsRef = admin.firestore().collection('colleges').doc(collegeName.toLowerCase()).collection('students');
       await collegeStudentsRef.doc(userRecord.uid).set(studentData);
       console.log('Successfully created new student:', userRecord.uid);
       res.redirect('/studentlogin');
     } else {
-      // If the email doesn't match, you can handle it appropriately.
       res.status(400).send('Student email domain does not match the expected domain for the institute.');
     }
   } catch (error) {
@@ -188,10 +182,9 @@ app.post('/studentlogin', async (req, res) => {
   try {
     const { email, password } = req.body;
     const studentEmail = email;
-    const collegeName = req.body.InstituteName; // Get the InstituteName from the form data
+    const collegeName = req.body.InstituteName;
 
-    // Query the "students" collection under the specific college
-    const studentQuery = await admin.firestore().collection('colleges').doc(collegeName).collection('students').where('email', '==', email).get();
+    const studentQuery = await admin.firestore().collection('colleges').doc(collegeName.toLowerCase()).collection('students').where('email', '==', email).get();
 
     if (studentQuery.empty) {
       res.status(401).send('Unauthorized');
@@ -201,7 +194,6 @@ app.post('/studentlogin', async (req, res) => {
     const studentData = studentQuery.docs[0].data();
 
     if (passwordHash.verify(password, studentData.password)) {
-      // res.redirect(`/studentreview?email=${email}&collegeName=${collegeName}`);
       res.render("index.ejs", { studentEmail : studentEmail, collegeName : collegeName });
     } else {
       res.status(401).send('Unauthorized');
@@ -214,42 +206,79 @@ app.post('/studentlogin', async (req, res) => {
 
 app.post('/submit-facilities', async (req, res) => {
   try {
-    if (!req.files || !req.files.images) {
-      return res.status(400).send('No files were uploaded.');
+    if (!req.files || !req.files.image) {
+      return res.status(400).send('No file was uploaded.');
     }
 
     const facilitiesData = req.body;
     const collegeName = facilitiesData.collegeName;
-    const collegeRef = admin.firestore().collection('colleges').doc(collegeName).collection('facilities');
-    const facilitiesDocRef = await collegeRef.add(facilitiesData);
+    const collegeRef = admin.firestore().collection('colleges').doc(collegeName.toLowerCase());
+    const facilitiesRef = collegeRef.collection('facilities');
 
-    const images = req.files.images;
+    let facilitiesDocRef;
 
-    for (let i = 0; i < images.length; i++) {
-      const image = images[i];
-      const originalname = image.name; // Assuming 'originalname' contains the file name
-      const file = storage.bucket("college-critic.appspot.com").file(`facilities/${collegeName}/${facilitiesDocRef.id}/${originalname}`);
+    const querySnapshot = await facilitiesRef.get();
 
-      const stream = file.createWriteStream({
-        metadata: {
-          contentType: image.mimetype,
-        },
-      });
-
-      stream.on('error', (err) => {
-        console.error('Error uploading image:', err);
-      });
-
-      stream.on('finish', () => {
-        console.log('Image uploaded successfully.');
-      });
-
-      stream.end(image.data);
+    if (querySnapshot.empty) {
+      facilitiesDocRef = facilitiesRef.doc();
+      facilitiesData.facilitiesId = facilitiesDocRef.id;
+      facilitiesData.imageUrls = [];
+      await facilitiesDocRef.set(facilitiesData);
+    } else {
+      const facilitiesDoc = querySnapshot.docs[0];
+      facilitiesDocRef = facilitiesDoc.ref;
+      facilitiesData.facilitiesId = facilitiesDoc.id;
+      facilitiesData.imageUrls = facilitiesDoc.data().imageUrls || [];
+      await facilitiesDocRef.set(facilitiesData, { merge: true });
     }
+
+    const image = req.files.image;
+    const originalname = image.name;
+    const file = storage
+      .bucket('college-critic.appspot.com')
+      .file(`facilities/${collegeName.toLowerCase()}/${facilitiesData.facilitiesId}/${originalname}`);
+
+    const stream = file.createWriteStream({
+      metadata: {
+        contentType: image.mimetype,
+      },
+    });
+
+    stream.on('error', (err) => {
+      console.error('Error uploading image:', err);
+    });
+
+    stream.on('finish', async () => {
+      console.log('Image uploaded successfully.');
+
+      const imageUrl = await file.getSignedUrl({
+        action: 'read',
+        expires: '03-17-2025',
+      }).then((urls) => {
+        return urls[0];
+      }).catch((error) => {
+        console.error('Error getting signed URL:', error);
+        return null;
+      });
+
+      if (imageUrl) {
+        facilitiesData.imageUrls.push(imageUrl);
+
+        await facilitiesDocRef.update({ imageUrls: facilitiesData.imageUrls })
+          .then(() => {
+            console.log('Image URL updated in Firestore');
+          })
+          .catch((error) => {
+            console.error('Error updating image URL in Firestore:', error);
+          });
+      }
+    });
+
+    stream.end(image.data);
     res.redirect(302, '/facilities');
   } catch (error) {
-    console.error('Error submitting review:', error);
-    res.status(500).send('Error submitting review');
+    console.error('Error submitting facilities:', error);
+    res.status(500).send('Error submitting facilities');
   }
 });
 
@@ -257,17 +286,14 @@ app.post('/reviewsSubmit', async (req, res) => {
   console.log('Executing /reviews route');
   try {
     const collegeName = req.body.collegeName;
-    const reviewsQuery = await admin.firestore().collection('colleges').doc(collegeName).collection('students').get();
-    // Create an array to store reviews
+    const reviewsQuery = await admin.firestore().collection('colleges').doc(collegeName.toLowerCase()).collection('students').get();
     const reviewsData = [];
     reviewsQuery.forEach((doc) => {
       const reviewData = doc.data().review;
       const student = doc.data().StudentName;
-      // Add review data to the reviews array
       reviewsData.push({ student, reviewData });
     });
 
-    // Render the EJS template with college details and reviews data
     res.render('reviews.ejs', { reviews: reviewsData });
   } catch (error) {
     console.error('Error getting college details:', error);
@@ -279,8 +305,7 @@ app.post('/studentreview', async (req, res) => {
   try {
     const { review, email, college } = req.body;
 
-    // First, you need to get the InstituteName associated with the student's email
-    const studentQuery = await admin.firestore().collection('colleges').doc(college).collection('students').where('email', '==', email).get();
+    const studentQuery = await admin.firestore().collection('colleges').doc(college.toLowerCase()).collection('students').where('email', '==', email).get();
 
     if (studentQuery.empty) {
       res.status(404).send('Student not found');
@@ -289,15 +314,13 @@ app.post('/studentreview', async (req, res) => {
 
     const studentData = studentQuery.docs[0].data();
 
-    // Reference to the student's document in the "students" collection under the specific college
-    const studentRef = admin.firestore().collection('colleges').doc(college).collection('students').doc(studentData.uid);
+    const studentRef = admin.firestore().collection('colleges').doc(college.toLowerCase()).collection('students').doc(studentData.uid);
 
     const reviewData = {
       review: review,
-      timestamp: admin.firestore.FieldValue.serverTimestamp(), // Optional: add a timestamp
+      timestamp: admin.firestore.FieldValue.serverTimestamp(),
     };
 
-    // Set the review data in the student's document (merge: true ensures it updates existing data)
     await studentRef.set(reviewData, { merge: true });
 
     console.log('Review submitted successfully');
@@ -310,45 +333,33 @@ app.post('/studentreview', async (req, res) => {
 
 app.post('/college-details', async (req, res) => {
   try {
-    const collegeName = req.body.collegeName; // Get the college name from the request body
+    const collegeName = req.body.collegeName;
+    const collegeDoc = await admin.firestore().collection('colleges').doc(collegeName.toLowerCase()).get();
 
-    // Query the "colleges" collection to get college details
-    const collegeDoc = await admin.firestore().collection('colleges').doc(collegeName).get();
-
-    // if (!collegeDoc.exists) {
-    //   res.status(404).send('College not found');
-    //   return;
-    // }
-
-    // Query the "facilities" subcollection to get facilities data for that college
     const facilitiesQuery = await collegeDoc.ref.collection('facilities').get();
 
     const facilities = [];
 
     facilitiesQuery.forEach((facilityDoc) => {
-      // Add each facility document to the facilities array
       facilities.push(facilityDoc.data());
     });
 
-    const imageUrls = facilities.map((facility) => {
-      const imageUrl = `https://storage.googleapis.com/college-critic.appspot.com/facilities/${collegeName}/${facility.id}/${facility.originalname}`;
-      return imageUrl;
-    });
+    const facility = facilities[0];
 
-    // Query the "colleges/collegeName/students" subcollection to get reviews
-    const reviewsQuery = await admin.firestore().collection('colleges').doc(collegeName).collection('students').get();
+    // Retrieve the image URL from the first facility entry
+    const imageUrls = facility.imageUrls[0];
 
-    // Create an array to store reviews
+    console.log(imageUrls);
+    const reviewsQuery = await admin.firestore().collection('colleges').doc(collegeName.toLowerCase()).collection('students').get();
+
     const reviews = [];
     reviewsQuery.forEach((doc) => {
       const reviewData = doc.data().review;
       const student = doc.data().StudentName;
-      // Add review data to the reviews array
       reviews.push({ student, reviewData });
     });
 
-    // Render the EJS template with college details and reviews data
-    res.render('show.ejs', { collegeData : facilities, reviews : reviews, imageUrls: imageUrls });
+    res.render('show.ejs', { collegeData: facilities, imageUrls, reviews });
   } catch (error) {
     console.error('Error getting college details:', error);
     res.status(500).send('Error getting college details');

@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
-<!-- partial:index.partial.html -->
 <div class="wrapper">
   <div class="title-text">
     <div class="title login"><span class="material-symbols-outlined title login logo" style="font-size: 150px;">
@@ -52,21 +51,37 @@
           <input type="email" placeholder="Email Address" name="email" required>
         </div>
         <div class="field">
-          <input type="password" placeholder="Password" name="password" required>
+          <input type="password" placeholder="Password" name="password" id="password" required>
         </div>
         <div class="field">
-          <input type="password" placeholder="Confirm password" name="" required>
+          <input type="password" placeholder="Confirm password" name="confirmPassword" id="confirmPassword" required>
         </div>
+        <div class="error-message" id="passwordMismatchError"></div>
         <div class="field btn">
-          <div class="btn-layer"></div>
-          <input type="submit" value="Signup">
+          <div class="btn-layer">
+            <input type="submit" value="Signup" onclick="return validateForm()">
+          </div>
         </div>
       </form>
     </div>
   </div>
 </div>
-<!-- partial -->
   <script  src="/js/script.js"></script>
-
+  <script>
+    function validateForm() {
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const errorDiv = document.getElementById('passwordMismatchError');
+      console.log(password, confirmPassword);
+      if (password !== confirmPassword) {
+        errorDiv.textContent = 'Passwords do not match!';
+        errorDiv.style.color = 'red';
+        return false;
+      } else {
+        errorDiv.textContent = '';
+        return true;
+      }
+    }
+  </script>
 </body>
 </html>

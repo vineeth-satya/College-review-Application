@@ -30,6 +30,12 @@ body {
   left: 450px;
   height:700px
 }
+
+.field.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .wrapper .title-text {
   display: flex;
   width: 200%;

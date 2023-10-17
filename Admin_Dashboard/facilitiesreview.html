@@ -285,7 +285,7 @@
             <ul>
                 <li class="sidebar-item"><a class="sidebar-link" href="/admindashboard"><i class="fa-solid fa-house-chimney"></i>Home</a></li>
                 <li class="sidebar-item"><a class="sidebar-link" href="/reviews"><i class="fa-solid fa-user"></i>Students Reviews</a></li>
-                <li class="sidebar-item" id="settings"><a class="sidebar-link" href="#"><i class="fa-solid fa-gear"></i>Settings</a></li>
+                <li class="sidebar-item" id="settings"><a class="sidebar-link" href="/"><i class="fa-solid fa-arrow-right-from-bracket"></i>LogOut</a></li>
             </ul>
         </div>
         <div class="right-content form-container" style=" overflow-y: auto;">
@@ -322,6 +322,7 @@
                             <label class="form-check-label" for="gymNo">No</label>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="ground">3.Is there a ground at your institute?</label>
                         <div class="form-check">
@@ -333,6 +334,7 @@
                             <label class="form-check-label" for="groundNo">No</label>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="sportsEvents">4. Are there any sports events at your institute?</label>
                         <div class="form-check">
@@ -344,6 +346,7 @@
                             <label class="form-check-label" for="sportsEventsNo">No</label>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="canteen">5.Is there a canteen at your institute?</label>
                         <div class="form-check">
@@ -356,11 +359,6 @@
                         </div>
                     </div>
 
-                    <!-- <div class="form-group">
-                        <label>4. How satisfied are you with the academic facilities at your institute? (Scale of 1-5)</label>
-                        <input type="range" class="form-control-range" name="academicSatisfaction" min="1" max="6">
-                    </div> -->
-
                     <div class="form-group">
                         <label for="library">6. Do you find the library facilities satisfactory?</label>
                         <div class="form-check">
@@ -372,13 +370,6 @@
                             <label class="form-check-label" for="libraryNo">No</label>
                         </div>
                     </div>
-
-                    
-<!--                 
-                    <div class="form-group">
-                        <label>7. How would you rate the cleanliness and maintenance of the campus? (Scale of 1-5)</label>
-                        <input type="range" class="form-control-range" name="cleanlinessRating" min="1" max="6">
-                    </div> -->
                 
                     <div class="form-group">
                         <label>7. Is the institute well-equipped with modern technology and infrastructure?</label>
@@ -391,11 +382,6 @@
                             <label class="form-check-label" for="infrastructureNo">No</label>
                         </div>
                     </div>
-                
-                    <!-- <div class="form-group">
-                        <label>9. How satisfied are you with the placement opportunities provided by the institute? (Scale of 1-5)</label>
-                        <input type="range" class="form-control-range" name="placementSatisfaction" min="1" max="6">
-                    </div> -->
                 
                     <div class="form-group">
                         <label>8. Have you had access to quality study materials and resources?</label>
@@ -421,11 +407,6 @@
                         </div>
                     </div>
                 
-                    <!-- <div class="form-group">
-                        <label>12. How would you rate the responsiveness and effectiveness of the study faculty? (Scale of 1-5)</label>
-                        <input type="range" class="form-control-range" name="facultyRating" min="1" max="6">
-                    </div> -->
-                
                     <div class="form-group">
                         <label>10. Do you have access to a well-maintained computer lab?</label>
                         <div class="form-check">
@@ -449,21 +430,16 @@
                             <label class="form-check-label" for="internshipOpportunitiesNo">No</label>
                         </div>
                     </div>
-<!--                 
-                    <div class="form-group">
-                        <label>15. How would you rate the accessibility and approachability of the institute's administration and support staff? (Scale of 1-5)</label>
-                        <input type="range" class="form-control-range" name="staffRating" min="1" max="6">
-                    </div> -->
+
                     <div class="form-group">
                         <label>12. Any additional comments or suggestions:</label>
                         <textarea class="form-control" name="comments" rows="4"></textarea>
                     </div>
                     <div class="image-upload">
-                        <h3>Upload Any College Images</h3>
+                        <h3>Upload Your College Image</h3>
                         <br>
-                        <input type="file" name="images" id="file" class="inputfile" accept=".png, .jpg, .jpeg" multiple>
-                        <label for="file">Choose one or more images</label>
-                        <!-- Image preview area -->
+                        <input type="file" name="image" id="file" class="inputfile" accept=".png, .jpg, .jpeg" required>
+                        <label for="file">Choose one image of your college</label>
                         <div id="image-preview"></div>
                     </div>
                     <br><br>
@@ -473,7 +449,6 @@
         </div>
     </div>
     <script>
-        // JavaScript for handling image preview
         const fileInput = document.getElementById('file');
         const imagePreview = document.getElementById('image-preview');
 
