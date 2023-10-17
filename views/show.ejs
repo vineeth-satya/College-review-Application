@@ -9,80 +9,120 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
     <style>
-
+        .image {
+            border: 2px solid black;
+            height: 500px;
+            width: 800px;
+        }
+        
+        .parent {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50%;
+            width: 100%;
+            background-image: url("https://images.unsplash.com/photo-1554034483-04fda0d3507b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80");
+        }
+        
+        .li {
+            display: flex;
+            gap: 30%;
+            margin-left: 30%;
+        }
+        
+        .facilities {
+            border: 2px solid black;
+            font-size: 20px;
+            background-image: url("https://images.unsplash.com/photo-1554034483-04fda0d3507b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80");
+        }
+        
+        .reviews {
+            padding-left: 60vh;
+            font-size: 20px;
+            background-image: url("https://images.unsplash.com/photo-1554034483-04fda0d3507b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80");
+        }
+        
+        li {
+            text-align: start;
+        }
     </style>
 </head>
 
 <body>
-    <div class="image"></div>
+    <div class="parent">
+        <div class="image"></div>
+    </div>
     <div class="facilities">
-        <h2>College Facilities:</h2>
-        <ul>
-            <li>
-                <p>Canteen :
-                    <%=collegeData[0].canteen %>
-                </p>
-            </li>
-            <li>
-                <p>Ground :
-                    <%=collegeData[0].ground %>
-                </p>
-            </li>
-            <li>
-                <p>Library :
-                    <%=collegeData[0].library %>
-                </p>
-            </li>
-            <li>
-                <p>Park :
-                    <%=collegeData[0].park %>
-                </p>
-            </li>
-            <li>
-                <p>Gym :
-                    <%=collegeData[0].gym %>
-                </p>
-            </li>
-            <li>
-                <p>Infrastructure :
-                    <%=collegeData[0].infrastructure %>
-                </p>
-            </li>
-            <li>
-                <p>Sports/Events :
-                    <%=collegeData[0].sportsEvents %>
-                </p>
-            </li>
-            <li>
-                <p>ComputerLab :
-                    <%=collegeData[0].computerLab %>
-                </p>
-            </li>
-            <li>
-                <p>IndustryWorkshops :
-                    <%=collegeData[0].industryWorkshops %>
-                </p>
-            </li>
-            <li>
-                <p>InternshipOpportunities :
-                    <%=collegeData[0].internshipOpportunities %>
-                </p>
-            </li>
-            <li>
-                <p>Additional Facilities :
-                    <%=collegeData[0].comments %>
-                </p>
-            </li>
-        </ul>
+        <center>
+            <h2 style="font-size: 30px; border: 1px solid black; border-top-right-radius: 50%; border-bottom-left-radius: 50%; width: 50%;">College Facilities</h2>
+            <div class="li">
+                <div class="child1">
+                    <ul>
+                        <li style="border: 1px solid black; border-radius: 5px;">
+                            Canteen :
+                            <%=collegeData[0].canteen %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;">
+                            Ground :
+                            <%=collegeData[0].ground %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;">
+                            Library :
+                            <%=collegeData[0].library %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;">
+                            Park :
+                            <%=collegeData[0].park %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;">
+                            Gym :
+                            <%=collegeData[0].gym %>
+                        </li><br>
+
+                        <li style="border: 1px solid black; border-radius: 5px;">
+                            Infrastructure :
+                            <%=collegeData[0].infrastructure %>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="child2">
+                    <ul>
+                        <li style="border: 1px solid black; border-radius: 5px;">
+                            Sports/Events :
+                            <%=collegeData[0].sportsEvents %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;">
+                            ComputerLab :
+                            <%=collegeData[0].computerLab %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;">
+                            IndustryWorkshops :
+                            <%=collegeData[0].industryWorkshops %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;">
+                            InternshipOpportunities :
+                            <%=collegeData[0].internshipOpportunities %>
+                        </li><br>
+                        <li style="border: 1px solid black; height: auto; border-radius: 5px;">
+                            Additional Facilities :
+                            <%=collegeData[0].comments %>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </center>
     </div>
     <div class="reviews">
-        <h2>College Reviews:</h2>
-        <ul>
+        <h2 style="margin-top:0px;">College Reviews:</h2>
+        <ul style="padding-left: 6vh;">
             <% reviews.forEach((review)=> {
             %>
                 <li>
                     <p><strong>Student Name: <%=review.student %></strong></p>
-                    <p>Review:
+                    <p style="padding-left: 5vh;">Review:
                         <%=review.reviewData %>
                     </p>
                 </li>
