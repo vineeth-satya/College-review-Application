@@ -183,9 +183,9 @@
                 <span class="sidebar-title"><a href="">Dashboard</a></span>
             </div>
             <ul>
-                <li class="sidebar-item"><a class="sidebar-link" href="/facilities"><i class="fa-solid fa-file-pen"></i>College Facilities</a>
+                <li class="sidebar-item"><a class="sidebar-link" id="facilities-link" href="/facilities"><i class="fa-solid fa-file-pen"></i>College Facilities</a>
                 </li>
-                <li class="sidebar-item"><a class="sidebar-link" href="/reviews"><i class="fa-solid fa-user"></i>Students Reviews</a>
+                <li class="sidebar-item"><a class="sidebar-link" id="reviews-link" href="/reviews?collegeName=VITB"><i class="fa-solid fa-user"></i>Students Reviews</a>
                 </li>
                 <li class="sidebar-item" id="settings"><a class="sidebar-link" href="#"><i class="fa-solid fa-gear"></i>Settings </a></li>
             </ul>
@@ -194,5 +194,21 @@
         </main>
         <div class="right-content"></div>
     </div>
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        // Replace "YourCollegeName" with the actual college name from your JavaScript/Express code
+        const urlParams = new URLSearchParams(window.location.search);
+        const collegeName = urlParams.get("collegeName");
+
+        // Find the facilities link element by its id
+        const facilitiesLink = document.getElementById("facilities-link");
+        const reviewsLink = document.getElementById("reviews-link");
+        // Update the href attribute of the link with the collegeName query parameter
+        if (collegeName) {
+            facilitiesLink.href = `/facilities?collegeName=${collegeName}`;
+            reviewsLink.href = `/reviews?collegeName=${collegeName}`;
+        }
+    });
+    </script> -->
 </body>
 </html>

@@ -61,7 +61,7 @@ app.get('/facilities', (req, res) => {
 });
 
 app.get('/reviews', (req, res) => {
-  res.sendFile(path.join(__dirname, "Admin_Dashboard/reviews.html"));
+  res.render(__dirname + "/views/reviews.ejs", { reviews : "" });
 });
 
 app.get('/studentreview', (req, res) => {
@@ -92,7 +92,7 @@ app.post('/register', async (req, res) => {
       await admin.firestore().collection('admins').doc(userRecord.uid).set(adminData);
   
       console.log('Successfully created new user:', userRecord.uid);
-      res.redirect('/login')
+      res.redirect(`/login`)
     } catch (error) {
       console.error('Error creating user:', error);
       res.status(500).send('Error creating user');
@@ -112,7 +112,7 @@ app.post('/login', async (req, res) => {
       const adminData = adminQuery.docs[0].data();
   
       if (passwordHash.verify(password, adminData.password)) {
-        res.redirect('/admindashboard');
+        res.redirect(`/admindashboard?collegeName=${adminData.InstituteName}`);
       } else {
         res.status(401).send('Unauthorized');
       }
@@ -221,6 +221,28 @@ app.post('/submit-facilities', async (req, res) => {
   } catch (error) {
     console.error('Error submitting review:', error);
     res.status(500).send('Error submitting review');
+  }
+});
+
+app.post('/reviewsSubmit', async (req, res) => {
+  console.log('Executing /reviews route');
+  try {
+    const collegeName = req.body.collegeName;
+    const reviewsQuery = await admin.firestore().collection('colleges').doc(collegeName).collection('students').get();
+    // Create an array to store reviews
+    const reviewsData = [];
+    reviewsQuery.forEach((doc) => {
+      const reviewData = doc.data().review;
+      const student = doc.data().StudentName;
+      // Add review data to the reviews array
+      reviewsData.push({ student, reviewData });
+    });
+
+    // Render the EJS template with college details and reviews data
+    res.render('reviews.ejs', { reviews: reviewsData });
+  } catch (error) {
+    console.error('Error getting college details:', error);
+    res.status(500).send('Error getting college details');
   }
 });
 
