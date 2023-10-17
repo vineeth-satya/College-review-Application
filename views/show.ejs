@@ -56,8 +56,12 @@
 
 <body>
     <div class="parent">
-        <div class="image"></div>
-    </div>
+        <div class="image">
+          <% for (let i = 0; i < imageUrls.length; i++) { %>
+            <img src="<%= imageUrls[i] %>" alt="Facility Image <%= i + 1 %>">
+          <% } %>
+        </div>
+      </div>
     <div class="facilities">
         <center>
             <h2 style="font-size: 30px; border: 1px solid black; border-top-right-radius: 50%; border-bottom-left-radius: 50%; width: 50%;background:linear-gradient(#00CDAC,#56B4D3)">College Facilities</h2>

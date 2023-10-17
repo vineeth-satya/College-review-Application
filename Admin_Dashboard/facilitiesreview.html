@@ -261,6 +261,18 @@
         .btn:hover {
             background-color: #30dbd3;
         }
+
+        #image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        #image-preview img {
+            max-width: 150px;
+            max-height: 150px;
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
@@ -281,7 +293,7 @@
                 <h1>College Facilities Review</h1>
             </header>
             <div class="container">
-                <form id="reviewForm" action="/submit-facilities" method="post">
+                <form id="reviewForm" action="/submit-facilities" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="collegeName">College Name:</label>
                         <input type="text" id="collegeName" name="collegeName" required>
@@ -447,15 +459,35 @@
                         <textarea class="form-control" name="comments" rows="4"></textarea>
                     </div>
                     <div class="image-upload">
-                        <h3>Upload Any College Images</h3><br>
-                        <input type="file" name="file" id="file" class="inputfile" multiple>
+                        <h3>Upload Any College Images</h3>
+                        <br>
+                        <input type="file" name="images" id="file" class="inputfile" accept=".png, .jpg, .jpeg" multiple>
                         <label for="file">Choose one or more images</label>
-                    </div>                    
+                        <!-- Image preview area -->
+                        <div id="image-preview"></div>
+                    </div>
                     <br><br>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
     </div>
+    <script>
+        // JavaScript for handling image preview
+        const fileInput = document.getElementById('file');
+        const imagePreview = document.getElementById('image-preview');
+
+        fileInput.addEventListener('change', function () {
+            const files = Array.from(fileInput.files);
+            files.forEach((file) => {
+                if (file.type.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = URL.createObjectURL(file);
+                    imagePreview.appendChild(img);
+                }
+            });
+        });
+    </script>
+
 </body>
 </html>
