@@ -6,40 +6,142 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Sidebar Menu </title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
+    <style>
+        body {
+            margin: 0px;
+        }
+        
+        .image {
+            border: 2px solid black;
+            height: 500px;
+            width: 800px;
+        }
+        
+        .parent {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50%;
+            width: 100%;
+            background-color: #fbfcfc;
+        }
+        
+        .li {
+            display: flex;
+            gap: 30%;
+            margin-left: 30%;
+        }
+        
+        .facilities {
+            border: 2px solid black;
+            font-size: 20px;
+            background-color: #97e8df;
+        }
+        
+        .reviews {
+            padding-left: 60vh;
+            font-size: 20px;
+            background-color: #97e8df;
+        }
+        
+        li {
+            text-align: start;
+            padding-left: 5px;
+            width: 120%;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="parent">
+        <div class="image">
+          <% for (let i = 0; i < imageUrls.length; i++) { %>
+            <img src="<%= imageUrls[i] %>" alt="Facility Image <%= i + 1 %>">
+          <% } %>
+        </div>
+      </div>
     <div class="facilities">
-        <h2>College Facilities:</h2>
-        <ul>
-            <li>
-                <p>Canteen: <%= collegeData[0].canteen %></p>
-                <p>Ground: <%= collegeData[0].ground %></p>
-                <p>Library: <%= collegeData[0].library %></p>
-                <p>Park: <%= collegeData[0].park %></p>
-                <p>Gym: <%= collegeData[0].gym %></p>
-                <p>Infrastructure: <%= collegeData[0].infrastructure %></p>
-                <p>Sports/Events: <%= collegeData[0].sportsEvents %></p>
-                <p>ComputerLab: <%= collegeData[0].computerLab %></p>
-                <p>IndustryWorkshops: <%= collegeData[0].industryWorkshops %></p>
-                <p>InternshipOpportunities: <%= collegeData[0].internshipOpportunities %></p>
-                <p>Additional Facilities: <%= collegeData[0].comments %></p>
-            </li>
-        </ul>
+        <center>
+            <h2 style="font-size: 30px; border: 1px solid black; border-top-right-radius: 50%; border-bottom-left-radius: 50%; width: 50%;background:linear-gradient(#00CDAC,#56B4D3)">College Facilities</h2>
+            <div class="li">
+                <div class="child1">
+                    <ul>
+                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
+                            Canteen :
+                            <%=collegeData[0].canteen %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
+                            Ground :
+                            <%=collegeData[0].ground %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
+                            Library :
+                            <%=collegeData[0].library %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
+                            Park :
+                            <%=collegeData[0].park %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
+                            Gym :
+                            <%=collegeData[0].gym %>
+                        </li><br>
+
+                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
+                            Infrastructure :
+                            <%=collegeData[0].infrastructure %>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="child2">
+                    <ul>
+                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
+                            Sports/Events :
+                            <%=collegeData[0].sportsEvents %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
+                            ComputerLab :
+                            <%=collegeData[0].computerLab %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
+                            IndustryWorkshops :
+                            <%=collegeData[0].industryWorkshops %>
+                        </li><br>
+                        <li style="border: 1px solid black; border-radius: 5px;background-color:white;">
+                            InternshipOpportunities :
+                            <%=collegeData[0].internshipOpportunities %>
+                        </li><br>
+                        <li style="border: 1px solid black; height: auto; border-radius: 5px;background-color:white;">
+                            Additional Facilities :
+                            <%=collegeData[0].comments %>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+        </center>
     </div>
     <div class="reviews">
-        <h2>College Reviews:</h2>
-        <ul>
+        <h2 style="margin-top: 0px;">College Reviews:</h2>
+        <ul style="padding-left: 6vh;margin-bottom:0px;">
             <% reviews.forEach((review) => { %>
-                <li>
-                    <p><strong>Student Name: <%= review.student %></strong></p>
-                    <p>Review: <%= review.reviewData %></p>
+                <li style="border: 1px solid black; width: 60%; height: auto; margin-bottom: 5px; padding: 10px;">
+                    <p style="border: 1px solid black; padding: 5px;background-color:white;"><strong>Student Name: <%=review.student %></strong></p>
+                    <p style="border: 1px solid black; padding: 5px;background-color:white;">Review:
+                        <%=review.reviewData %>
+                    </p>
                 </li>
-            <% }); %>
+                <%
+            }
+            );
+            %>
         </ul>
     </div>
+
 </body>
+
 </html>

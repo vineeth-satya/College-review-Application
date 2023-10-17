@@ -3,6 +3,8 @@ const admin = require('firebase-admin');
 const bodyParser = require('body-parser');
 var passwordHash = require('password-hash');
 const path = require('path');
+const fileUpload = require("express-fileupload");
+const { Storage } = require("@google-cloud/storage");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,14 +12,24 @@ const port = process.env.PORT || 3000;
 const serviceAccount = require('./key.json');
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://console.firebase.google.com/u/0/project/college-critic/firestore/data/~2F"
+  databaseURL: "https://console.firebase.google.com/u/0/project/college-critic/firestore/data/~2F",
+  storageBucket: 'https://console.firebase.google.com/u/0/project/college-critic/storage/college-critic.appspot.com/files',
 });
+
+const storage = new Storage({
+  projectId: "college-critic",
+  keyFilename: "./key.json",
+})
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views')); // Update this path to your views directory
 
+const bucket = storage.bucket("gs://college-critic.appspot.com");
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(fileUpload());
 
 app.use('/css', (req, res, next) => {
   res.type('text/css');
@@ -61,7 +73,7 @@ app.get('/facilities', (req, res) => {
 });
 
 app.get('/reviews', (req, res) => {
-  res.sendFile(path.join(__dirname, "Admin_Dashboard/reviews.html"));
+  res.render(__dirname + "/views/reviews.ejs", { reviews : "" });
 });
 
 app.get('/studentreview', (req, res) => {
@@ -69,7 +81,7 @@ app.get('/studentreview', (req, res) => {
 });
 
 app.get('/college-details', (req, res) => {
-  res.render(__dirname + "/views/show.ejs", { collegeData : "", reviews : "" });
+  res.render(__dirname + "/views/show.ejs", { collegeData : "", reviews : "", imageUrls : "" });
 });
 
 app.post('/register', async (req, res) => {
@@ -92,7 +104,7 @@ app.post('/register', async (req, res) => {
       await admin.firestore().collection('admins').doc(userRecord.uid).set(adminData);
   
       console.log('Successfully created new user:', userRecord.uid);
-      res.redirect('/login')
+      res.redirect(`/login`)
     } catch (error) {
       console.error('Error creating user:', error);
       res.status(500).send('Error creating user');
@@ -112,7 +124,7 @@ app.post('/login', async (req, res) => {
       const adminData = adminQuery.docs[0].data();
   
       if (passwordHash.verify(password, adminData.password)) {
-        res.redirect('/admindashboard');
+        res.redirect(`/admindashboard?collegeName=${adminData.InstituteName}`);
       } else {
         res.status(401).send('Unauthorized');
       }
@@ -202,51 +214,64 @@ app.post('/studentlogin', async (req, res) => {
 
 app.post('/submit-facilities', async (req, res) => {
   try {
-    const facilitiesData = req.body;
-
-    const collegeName = facilitiesData.collegeName; // Get the college name from the form data
-
-    // Create a reference to the "colleges" collection and a subcollection based on the college name
-    const collegeRef = admin.firestore().collection('colleges').doc(collegeName).collection('facilities');
-
-    // Store the review data in the subcollection and capture the auto-generated ID
-    const facilitiesDocRef = await collegeRef.add(facilitiesData);
-    const facilitiesDoc = {
-      facilitiesDocId : facilitiesDocRef.id,
+    if (!req.files || !req.files.images) {
+      return res.status(400).send('No files were uploaded.');
     }
 
-    // Assuming "facilitiesDocId" is the field where you want to store the ID
-    await facilitiesDocRef.set(facilitiesDoc, { merge : true });
+    const facilitiesData = req.body;
+    const collegeName = facilitiesData.collegeName;
+    const collegeRef = admin.firestore().collection('colleges').doc(collegeName).collection('facilities');
+    const facilitiesDocRef = await collegeRef.add(facilitiesData);
 
-    app.post('/submit-facilities', async (req, res) => {
-      try {
-        const facilitiesData = req.body;
-    
-        const collegeName = facilitiesData.collegeName; // Get the college name from the form data
-    
-        // Create a reference to the "colleges" collection and a subcollection based on the college name
-        const collegeRef = admin.firestore().collection('colleges').doc(collegeName).collection('facilities');
-    
-        // Store the review data in the subcollection and capture the auto-generated ID
-        const facilitiesDocRef = await collegeRef.add(facilitiesData);
-        const facilitiesDoc = {
-          facilitiesDocId: facilitiesDocRef.id,
-        }
-    
-        // Assuming "facilitiesDocId" is the field where you want to store the ID
-        await facilitiesDocRef.set(facilitiesDoc, { merge: true });
-    
-        // Send a JSON response indicating success
-        res.status(200).json({ message: 'Facilities stored successfully' });
-      } catch (error) {
-        console.error('Error submitting facilities:', error);
-        res.status(500).json({ error: 'Error submitting facilities' });
-      }
-    });
-    
+    const images = req.files.images;
+
+    for (let i = 0; i < images.length; i++) {
+      const image = images[i];
+      const originalname = image.name; // Assuming 'originalname' contains the file name
+      const file = storage.bucket("college-critic.appspot.com").file(`facilities/${collegeName}/${facilitiesDocRef.id}/${originalname}`);
+
+      const stream = file.createWriteStream({
+        metadata: {
+          contentType: image.mimetype,
+        },
+      });
+
+      stream.on('error', (err) => {
+        console.error('Error uploading image:', err);
+      });
+
+      stream.on('finish', () => {
+        console.log('Image uploaded successfully.');
+      });
+
+      stream.end(image.data);
+    }
+    res.redirect(302, '/facilities');
   } catch (error) {
     console.error('Error submitting review:', error);
     res.status(500).send('Error submitting review');
+  }
+});
+
+app.post('/reviewsSubmit', async (req, res) => {
+  console.log('Executing /reviews route');
+  try {
+    const collegeName = req.body.collegeName;
+    const reviewsQuery = await admin.firestore().collection('colleges').doc(collegeName).collection('students').get();
+    // Create an array to store reviews
+    const reviewsData = [];
+    reviewsQuery.forEach((doc) => {
+      const reviewData = doc.data().review;
+      const student = doc.data().StudentName;
+      // Add review data to the reviews array
+      reviewsData.push({ student, reviewData });
+    });
+
+    // Render the EJS template with college details and reviews data
+    res.render('reviews.ejs', { reviews: reviewsData });
+  } catch (error) {
+    console.error('Error getting college details:', error);
+    res.status(500).send('Error getting college details');
   }
 });
 
@@ -305,6 +330,11 @@ app.post('/college-details', async (req, res) => {
       facilities.push(facilityDoc.data());
     });
 
+    const imageUrls = facilities.map((facility) => {
+      const imageUrl = `https://storage.googleapis.com/college-critic.appspot.com/facilities/${collegeName}/${facility.id}/${facility.originalname}`;
+      return imageUrl;
+    });
+
     // Query the "colleges/collegeName/students" subcollection to get reviews
     const reviewsQuery = await admin.firestore().collection('colleges').doc(collegeName).collection('students').get();
 
@@ -318,7 +348,7 @@ app.post('/college-details', async (req, res) => {
     });
 
     // Render the EJS template with college details and reviews data
-    res.render('show.ejs', { collegeData : facilities, reviews : reviews });
+    res.render('show.ejs', { collegeData : facilities, reviews : reviews, imageUrls: imageUrls });
   } catch (error) {
     console.error('Error getting college details:', error);
     res.status(500).send('Error getting college details');
