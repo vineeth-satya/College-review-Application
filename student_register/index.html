@@ -10,7 +10,7 @@
 <!-- partial:index.partial.html -->
 <div class="wrapper">
   <div class="title-text">
-    <div class="title login"><span class="material-symbols-outlined title login logo" style="font-size: 200px;">
+    <div class="title login"><span class="material-symbols-outlined title login logo" style="font-size: 150px;">
       account_circle
       </span><p>Login Form</p></div>
     <div class="title signup">Signup Form</div>
@@ -24,7 +24,10 @@
       <div class="slider-tab"></div>
     </div>
     <div class="form-inner">
-      <form action="/login" method="post" class="login">
+      <form action="/studentlogin" method="post" class="login">
+        <div class="field">
+          <input type="text" placeholder="Institute Name" name="InstituteName" required>
+        </div>
         <div class="field">
           <input type="email" placeholder="Email Address" name="email" required>
         </div>
@@ -38,7 +41,7 @@
         </div>
         <div class="signup-link">Not a member? <a href="#">Signup now</a></div>
       </form>
-      <form action="/register" method="post" class="signup">
+      <form action="/studentregister" method="post" class="signup">
         <div class="field">
           <input type="text" placeholder="Student Name" name="StudentName" required>
         </div>

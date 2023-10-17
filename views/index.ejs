@@ -31,6 +31,7 @@
       max-width: 80%;
       display: flex;
       flex-direction: column;
+      justify-content: center;
       align-items: center; /* Center the content */
     }
 
@@ -70,8 +71,15 @@
     <div class="background-image"></div>
     <div class="content">
       <div class="text-area">
-        <h1>Any Additional ??</h1>
-        <textarea id="userInput" rows="6" maxlength="1000" placeholder="Enter your text (up to 1000 words)"></textarea>
+        <form action="/studentreview" method="post">
+          <h1>Review:</h1>
+          <p>Email: <%=studentEmail %></p>
+          <p>College Name: <%=collegeName %></p>
+          <textarea id="userInput" name="review" rows="6" maxlength="1000" placeholder="Enter your review on your college (up to 1000 characters)"></textarea>
+          <input type="hidden" name="email" value="<%= studentEmail %>">
+          <input type="hidden" name="college" value="<%= collegeName %>">
+          <button type="submit">Submit</button>
+        </form>
       </div>
     </div>
   </div>

@@ -75,7 +75,7 @@
                     <a href="contact.html" class="nav-item nav-link">Contact</a>
                 </div>
                 <div class="reg">
-                <a href="" class="btn btn-primary py-2 px-4 d-none d-lg-block" style="background-color: aliceblue; border-color: blue; color: blue;">Review College</a>
+                <a href="/studentregister" class="btn btn-primary py-2 px-4 d-none d-lg-block" style="background-color: aliceblue; border-color: blue; color: blue;">Review College</a>
                 <a href="/register" class="btn btn-primary py-2 px-4 d-none d-lg-block">Register</a>
             </div>
             </div>
@@ -91,12 +91,14 @@
             <h1 class="text-white display-1 mb-5">College Retrospect</h1>
             <div class="mx-auto mb-5" style="width: 100%; max-width: 600px;">
                 <div class="input-group">
-                    <div class="input-group-prepend">
-                    </div>
-                    <input type="text" class="form-control border-light" style="padding: 30px 25px;" placeholder="Enter College Name">
-                    <div class="input-group-append">
-                        <button class="btn btn-secondary px-4 px-lg-5">Search</button>
-                    </div>
+                    <form action="/college-details" method="post">
+                        <div class="input-group-prepend">
+                        </div>
+                        <input type="text" class="form-control border-light" style="padding: 30px 25px;" name="collegeName" placeholder="Enter College Name">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary px-4 px-lg-5" type="submit">Search</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

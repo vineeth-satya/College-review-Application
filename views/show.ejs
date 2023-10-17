@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Sidebar Menu </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <div class="facilities">
+        <h2>College Facilities:</h2>
+        <ul>
+            <li>
+                <p>Canteen: <%= collegeData[0].canteen %></p>
+                <p>Ground: <%= collegeData[0].ground %></p>
+                <p>Library: <%= collegeData[0].library %></p>
+                <p>Park: <%= collegeData[0].park %></p>
+                <p>Gym: <%= collegeData[0].gym %></p>
+                <p>Infrastructure: <%= collegeData[0].infrastructure %></p>
+                <p>Sports/Events: <%= collegeData[0].sportsEvents %></p>
+                <p>ComputerLab: <%= collegeData[0].computerLab %></p>
+                <p>IndustryWorkshops: <%= collegeData[0].industryWorkshops %></p>
+                <p>InternshipOpportunities: <%= collegeData[0].internshipOpportunities %></p>
+                <p>Additional Facilities: <%= collegeData[0].comments %></p>
+            </li>
+        </ul>
+    </div>
+    <div class="reviews">
+        <h2>College Reviews:</h2>
+        <ul>
+            <% reviews.forEach((review) => { %>
+                <li>
+                    <p><strong>Student Name: <%= review.student %></strong></p>
+                    <p>Review: <%= review.reviewData %></p>
+                </li>
+            <% }); %>
+        </ul>
+    </div>
+</body>
+</html>
